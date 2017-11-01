@@ -91,7 +91,7 @@ positve conditions and no negative conditions. Conditions are checked by running
 `re.search` on the whole test name -- the strings with `::`.
 
 For the `demo_complex.yaml` suite above, we might select tests in the `various`
-sweet excluding the `large` test with a command like this (using `-l` to list
+subtest excluding the `large` test with a command like this (using `-l` to list
 tests matching the conditions rather than executing them):
 
     $ ansunit complex.yaml -m various -n large
