@@ -34,51 +34,55 @@ A module may be defined as...
 
 This simple specification defines two basic tests in canonical form (all details defined at the leaves of the specification).
 
-    Test a implies b:
-        Program: |
-            b :- a.
-            a.
-            :- not b.
-        Expect: SAT
-        
-    Test b not implies a:
-        Program: |
-            b :- a.
-            b.
-            :- not a.
-        Expect: UNSAT
+```yaml
+Test a implies b:
+    Program: |
+        b :- a.
+        a.
+        :- not b.
+    Expect: SAT
+
+Test b not implies a:
+    Program: |
+        b :- a.
+        b.
+        :- not a.
+    Expect: UNSAT
+```
 
 This complex specification defines four test cases (three of which are grouped into a common suite). A `Definitions` section defines several modules with complex indirect references that are to be used later. In the second test (suite) several variations on a common test setup are defined concisely by means of inheriting details defined in the enclosing suite. Now shown, it is also possible to define all details including `Modules`, `Arguments`, and even `Program` at the top level for use by inheritance.
 
+```yaml
+Definitions:
+    foo: {filename: foo.lp}
+    bar: {filename: bar.lp}
+    both: {group: [instance, encoding]}
+    instance: {reference: bar}
+    inline: |
+        #const width = 3.
+        dim(1..width).
+        { p(X) } :- dim(X).
+
+
+Test twisted references:
     Definitions:
-        foo: {filename: foo.lp}
-        bar: {filename: bar.lp}
-        both: {group: [instance, encoding]}
-        instance: {reference: bar}
-        inline: |
-            #const width = 3.
-            dim(1..width).
-            { p(X) } :- dim(X).
-    
-    
-    Test twisted references:
-        Definitions:
-            encoding: {reference: foo}
-        Modules: both
-        Expect: SAT
-    
-    Test inline various:
-        Modules: inline
-        Expect: SAT
-    
-        Test small:
-            Arguments: -c width=1 
-    
-        Test medium:
-            Arguments: -c width=3 
-    
-        Test large:
-            Arguments: -c width=5
+        encoding: {reference: foo}
+    Modules: both
+    Expect: SAT
+
+Test inline various:
+    Modules: inline
+    Expect: SAT
+
+    Test small:
+        Arguments: -c width=1 
+
+    Test medium:
+        Arguments: -c width=3 
+
+    Test large:
+        Arguments: -c width=5
+```
 
 ## Command line arguments
 Run `ansunit --help` for more information.
